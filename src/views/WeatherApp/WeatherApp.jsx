@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import allActions from "../../actions/allActions";
 import weatherService from "../../services/weather-service";
+import geoLocationService from "../../services/geoLocation-service.js";
 import { DayPreview } from '../../cmps/DayPreview/DayPreview'
 import { useSnackbar } from 'notistack';
 
@@ -12,19 +13,26 @@ const _WeatherApp = () => {
     const favorites = useSelector(state => state.favoritesReducer.favorites);
     const locationCity = useSelector(state => state.weatherReducer.currLoaction);
     const isCelciusTemp = useSelector(state => state.weatherReducer.isCelcius);
+    const isDark = useSelector(state => state.weatherReducer.isDark);
 
     const { enqueueSnackbar, closeSnackbar } = useSnackbar();
     const [currWeather, setCurrWeather] = useState(null)
     const [curr5DaysWeather, setCurr5DaysWeather] = useState(null)
     const [search, setSearch] = useState(null)
     const [isCityFavorite, setIsCityFavorite] = useState(false);
+    const [geoLocation, setGeoLocation] = useState(false);
 
     useEffect(() => {
 
-        if (locationCity && !currWeather) {
+        if (locationCity && !currWeather && !geoLocation) {
             getCurrWeather(locationCity.key)
         }
     });
+
+    useEffect(() => {
+        getGeoLocation()
+    }, [])
+
 
     useEffect(() => {
         getCurrWeather(locationCity.key)
@@ -34,6 +42,32 @@ const _WeatherApp = () => {
         checkIsFavorite()
     }, [locationCity])
 
+
+    async function getGeoLocation() {
+        const currGeoLocation = await geoLocationService.getGeoLocaion();
+        try {
+            console.log(currGeoLocation);
+            if (currGeoLocation) {
+                setGeoLocation(currGeoLocation)
+                getLocationByGeoCoords(currGeoLocation)
+            }
+        }
+        catch {
+
+        }
+    }
+
+    async function getLocationByGeoCoords(geo) {
+        const loc = await weatherService.getLocationByGeoCoords(geo)
+        try {
+            console.log(loc);
+            dispatch(allActions.WeatherActions.setLocation({ name: loc.LocalizedName, key: loc.Key }))
+        }
+        catch {
+
+        }
+
+    }
 
     async function getLocationKey(city) {
         const currLoactionKey = await weatherService.getLocationByName(city)

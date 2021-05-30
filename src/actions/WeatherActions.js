@@ -8,9 +8,15 @@ const setIsCelcius = (isCelcius) => {
         dispatch({ type: 'SET_IS_CELCIUS', isCelcius })
     }
 }
+const setIsDark = (isDark) => {
+    return (dispatch) => {
+        dispatch({ type: 'SET_IS_DARK', isDark })
+    }
+}
 
 
 export default {
     setLocation,
-    setIsCelcius
+    setIsCelcius,
+    setIsDark
 }

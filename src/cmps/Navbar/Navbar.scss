@@ -2,8 +2,8 @@
     background-color: rgb(255, 255, 255);
     margin-bottom: 2rem;
 
-    .logo {
-        width: 8rem;
+    .logo-container {
+        width: 13rem;
     }
 
     ul {
@@ -15,7 +15,7 @@
         margin-left: 10px;
     }
 
-    i {
+    .logo {
         margin-left: 2rem;
         font-size: 2rem;
     }
@@ -24,6 +24,9 @@
         text-decoration: none;
         color: black;
         font-weight: bold;
+        cursor: pointer;
+    }
+    i{
         cursor: pointer;
     }
 

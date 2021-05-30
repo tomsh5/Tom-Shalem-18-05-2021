@@ -1,9 +1,10 @@
 const initialState = {
     currLoaction: {
-        name: 'Tel-Aviv',
-        key: '215854'
+        name: 'haifa',
+        key: '213181'
     },
-    isCelcius: true
+    isCelcius: true,
+    isDark: null
 }
 
 const weatherReducer = (state = initialState, action) => {
@@ -18,6 +19,12 @@ const weatherReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isCelcius: action.isCelcius
+            }
+        }
+        case "SET_IS_DARK": {
+            return {
+                ...state,
+                isDark: action.isDark
             }
         }
 

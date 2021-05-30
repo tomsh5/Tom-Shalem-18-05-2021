@@ -8,6 +8,7 @@ export default  {
     getLocationByName,
     getCurrentWeather,
     getFiveDaysWeather,
+    getLocationByGeoCoords
 };
 
 const API_KEY = 'ku3TWkIGVJl9x7GY6N3Ro5AYjEJcRYiA' 
@@ -28,4 +29,12 @@ function getCurrentWeather(locationKey){;
 function getFiveDaysWeather(locationKey, isCelciusTemp){
     const url = `${BASE_URL}forecasts/v1/daily/5day/${locationKey}?apikey=${API_KEY}&language=en-us&details=false&metric=${isCelciusTemp}`
     return axios.get(url).then(res => res.data.DailyForecasts);
+}
+
+function getLocationByGeoCoords(pos){
+    console.log(pos);
+    if (pos){
+    const url = `${BASE_URL}locations/v1/cities/geoposition/search?apikey=${API_KEY}&q=${pos.lat}%2C${pos.long}&language=en-us&details=false&toplevel=true`
+    return axios.get(url).then(res => res.data)
+    }
 }
