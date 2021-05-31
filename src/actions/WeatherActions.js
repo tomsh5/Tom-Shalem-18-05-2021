@@ -13,10 +13,16 @@ const setIsDark = (isDark) => {
         dispatch({ type: 'SET_IS_DARK', isDark })
     }
 }
+const setIsGeoLocation = (isGeoLocation) => {
+    return (dispatch) => {
+        dispatch({ type: 'SET_IS_GEO_LOCATION', isGeoLocation })
+    }
+}
 
 
 export default {
     setLocation,
     setIsCelcius,
-    setIsDark
+    setIsDark,
+    setIsGeoLocation
 }

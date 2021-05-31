@@ -4,6 +4,7 @@ const initialState = {
         key: '213181'
     },
     isCelcius: true,
+    isGeoLocation: false,
     isDark: null
 }
 
@@ -25,6 +26,12 @@ const weatherReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isDark: action.isDark
+            }
+        }
+        case "SET_IS_GEO_LOCATION": {
+            return {
+                ...state,
+                isGeoLocation: action.isGeoLocation
             }
         }
 

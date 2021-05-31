@@ -13,7 +13,7 @@ const _WeatherApp = () => {
     const favorites = useSelector(state => state.favoritesReducer.favorites);
     const locationCity = useSelector(state => state.weatherReducer.currLoaction);
     const isCelciusTemp = useSelector(state => state.weatherReducer.isCelcius);
-    const isDark = useSelector(state => state.weatherReducer.isDark);
+    const isGeoLocation = useSelector(state => state.weatherReducer.isGeoLocation);
 
     const { enqueueSnackbar, closeSnackbar } = useSnackbar();
     const [currWeather, setCurrWeather] = useState(null)
@@ -30,8 +30,16 @@ const _WeatherApp = () => {
     });
 
     useEffect(() => {
-        getGeoLocation()
+        if (!isGeoLocation) {
+            getGeoLocation()
+        }
     }, [])
+
+    useEffect(() => {
+        if (geoLocation) {
+            getLocationByGeoCoords(geoLocation)
+        }
+    }, [geoLocation])
 
 
     useEffect(() => {
@@ -46,14 +54,13 @@ const _WeatherApp = () => {
     async function getGeoLocation() {
         const currGeoLocation = await geoLocationService.getGeoLocaion();
         try {
-            console.log(currGeoLocation);
             if (currGeoLocation) {
                 setGeoLocation(currGeoLocation)
-                getLocationByGeoCoords(currGeoLocation)
+                dispatch(allActions.WeatherActions.setIsGeoLocation(true))
             }
         }
         catch {
-
+            showModal('server couldn\'t get your current location, try again', 'error', 3000)
         }
     }
 
@@ -64,7 +71,7 @@ const _WeatherApp = () => {
             dispatch(allActions.WeatherActions.setLocation({ name: loc.LocalizedName, key: loc.Key }))
         }
         catch {
-
+            showModal('server couldn\'t get your current location wather, try again', 'error', 3000)
         }
 
     }
